@@ -13,7 +13,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import gspread
 from gspread_dataframe import get_as_dataframe
-from google.auth import default
+
 
 # Configuración de la página
 st.set_page_config(page_title="BrightSpace Instructores", layout="wide")
@@ -22,7 +22,11 @@ st.title("📊 Análisis de Actividades en BrightSpace")
 st.write("Esta aplicación permite analizar las actividades de los instructores en la plataforma BrightSpace.")
 
 # Autenticación con Google
-creds, _ = default()
+from google.oauth2.service_account import Credentials
+import json
+
+creds_info = json.loads(st.secrets["GCP_SERVICE_ACCOUNT"])
+creds = Credentials.from_service_account_info(creds_info)
 gc = gspread.authorize(creds)
 
 # Lectura de Google Sheet
